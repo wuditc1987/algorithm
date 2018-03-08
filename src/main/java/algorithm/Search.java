@@ -23,7 +23,8 @@ public class Search {
         int count = 1;
         while(low <= high)
         {
-            int middle = (low + high) / 2;
+            int middle = low + (high - low) / 2;
+            //int middle = (high + low)/2 此处在极端情况下会出现溢出
             if(value == array[middle]) //找到则直接返回
             {
                 return count;
@@ -56,7 +57,7 @@ public class Search {
 
     public static void main(String[] args) {
         int[] nums = new int[]{5,8,14,20,31,55,78,81,93,97,111};
-        System.out.println(binarySearch(nums,93));
+        System.out.println(binarySearch(nums,111));
     }
 
 }

@@ -1,6 +1,5 @@
 package algorithm;
 
-
 /**
  * 排序说明   https://www.cnblogs.com/onepixel/articles/7674659.html
  * @description 
@@ -118,12 +117,12 @@ public class Sort {
      * @param nums
      * @return
      */
-    public int[] selection(int[] nums){
+    public static int[] selection(int[] nums){
         int len = nums.length;
         int minIndex, temp;
         for (int i = 0; i < len - 1; i++) {
             minIndex = i;
-            for (int j = i + 1; j < len; j++) {
+            for (int j = i + 1; j < len; j++) {		//无序区遍历
                 if (nums[j] < nums[minIndex]) {     //寻找最小的数
                     minIndex = j;                 //将最小数的索引保存
                 }
@@ -154,21 +153,41 @@ public class Sort {
      * @param nums
      * @return
      */
-    public int[] insertion (int[] nums){
-        int len = nums.length;
-        int preIndex,current;
-        for(int i = 1; i < len; i++){
-            preIndex = i-1;
-            current = nums[i];
-            while (preIndex >= 0 && nums[preIndex] > current) {
-                nums[preIndex] = nums[preIndex];
-                preIndex --;
-            }
-            nums[preIndex - 1] = current;
-        }
-        return nums;
-    }
+	public static int[] insertion(int[] nums){
+		int len = nums.length;
+	    int preIndex, current;
+	    for (int i = 1; i < len; i++) {
+	        preIndex = i - 1;
+	        current = nums[i];
+	        while(preIndex >= 0 && nums[preIndex] > current) {
+	        	nums[preIndex+1] = nums[preIndex];
+	            preIndex--;
+	        }
+	        nums[preIndex+1] = current;
+	        System.out.println(preIndex);
+	    }
+	    return nums;
+	}
     
+    
+	public static int[] insertion2(int[] nums) {
+		int j;
+		int target;
+		// 假定第一个元素被放到了正确的位置上
+		// 这样，仅需遍历1 - n-1
+		for (int i = 1; i < nums.length; i++) {
+			j = i;
+			target = nums[i];
+			while (j > 0 && target < nums[j - 1]) {
+				nums[j] = nums[j - 1];
+				j--;
+			}
+			nums[j] = target;
+		}
+		return nums;
+	}
+	
+
     /**
      * 希尔排序
      * @description 1959年Shell发明，第一个突破O(n^2)的排序算法，是简单插入排序的改进版。它与插入排序的不同之处在于，它会优先比较距离较远的元素。希尔排序又叫缩小增量排序
@@ -185,7 +204,7 @@ public class Sort {
      * @param arr
      * @return
      */
-    public int[] shell(int[] arr){
+    public static int[] shell(int[] arr){
         int len = arr.length,temp,gap = 1;
         while(gap < len/3) {          //动态定义间隔序列(步长)
             gap =gap*3+1;
@@ -219,23 +238,85 @@ public class Sort {
      * @param arr
      * @return
      */
-    public int[] merge(int[] arr){
+    public static int[] merge(int[] arr){
         
         return arr;
     }
     
     
     /**
+     * 快速排序
+     * @description 快速排序的基本思想：通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序
+     * 算法描述:快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：
+     * 		1.从数列中挑出一个元素，称为 “基准”（pivot）；
+     * 		2.重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+     * 		3.递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
      * 
-     * @description 快速排序
+     * 算法分析 最佳情况：T(n) = O(nlogn)   最差情况：T(n) = O(n2)   平均情况：T(n) = O(nlogn)
+     * 
+     * 首先在数组中选择一个基准点（该基准点的选取可能影响快速排序的效率，后面讲解选取的方法），然后分别从数组的两端扫描数组，
+     * 设两个指示标志（lo指向起始位置，hi指向末尾)，首先从后半部分开始，如果发现有元素比该基准点的值小，就交换lo和hi位置的值，
+     * 然后从前半部分开始扫秒，发现有元素大于基准点的值，就交换lo和hi位置的值，如此往复循环，直到lo>=hi,然后把基准点的值放到hi这个位置。
+     * 一次排序就完成了。以后采用递归的方式分别对前半部分和后半部分排序，当前半部分和后半部分均有序时该数组就自然有序了。
+     * 
+     * 取基准点的方法   https://www.cnblogs.com/coderising/p/5708801.html
+     * 
      * @author wudi
      * @date 2018年3月7日
      * @param nums
+     * @param lo
+     * @param hi
      * @return
      */
-    public int[] quick(int[] nums){
-        
+    public static int[] quick(int[] nums,int lo,int hi){
+    	if(lo>=hi){
+            return nums;
+        }
+        int index=partition(nums,lo,hi);
+        quick(nums,lo,index-1);
+        quick(nums,index+1,hi);
         return nums;
+    }
+    
+    /**
+     * 
+     * @description 分区操作
+     * @author wudi
+     * @date 2018年3月7日
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
+    public static int partition(int[] arr,int lo,int hi){
+    	//固定的切分方式
+        int key=arr[lo];
+        while(lo<hi){
+            while(arr[hi]>=key&&hi>lo){//从后半部分向前扫描
+                hi--;
+            }
+            arr[lo]=arr[hi];
+            while(arr[lo]<=key&&hi>lo){//从前半部分向后扫描
+                lo++;
+            }
+            arr[hi]=arr[lo];
+        }
+        arr[hi]=key;
+        return hi;
+    }
+    
+    /**
+     * @description 交换元素
+     * @author wudi
+     * @date 2018年3月7日
+     * @param arr
+     * @param i 前一个元素索引
+     * @param j 后一个元素索引
+     */
+    private static void swap(int[] arr,int i,int j){
+    	int temp = arr[i];
+    	arr[i] = arr[j];
+    	arr[j] = temp;
     }
     
     
@@ -247,7 +328,7 @@ public class Sort {
      * @param nums
      * @return
      */
-    public int[] heap(int[] nums){
+    public static int[] heap(int[] nums){
         
         return nums;
     }
@@ -255,7 +336,11 @@ public class Sort {
     
 
     public static void main(String[] args) {
-
+    	int[] arr = new int[]{4,10,5,8,22,15,77,55};
+    	int[] nums = insertion(arr);
+    	/*for(int num : nums){
+    		System.out.println(num);
+    	}*/
     }
 
 }
