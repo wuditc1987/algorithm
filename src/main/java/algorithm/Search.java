@@ -13,7 +13,7 @@ public class Search {
      * @description 二分查找
      * @author wudi
      * @date 2018年3月7日
-     * @param array 待查找的数组
+     * @param array 待查找的数组(有序数组)
      * @param value 需要查找的数字
      * @return 返回检索次数/返回数据在数组中的位置
      */
