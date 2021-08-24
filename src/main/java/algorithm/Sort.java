@@ -1,5 +1,8 @@
 package algorithm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * 排序说明   https://www.cnblogs.com/onepixel/articles/7674659.html
  * @description 
@@ -47,23 +50,26 @@ public class Sort {
      * @return
      */
     public static int[] bubble(int[] arr,int n){
-        int j, k = n > arr.length ? arr.length : n;
-        boolean flag = true;//发生了交换就为true, 没发生就为false，第一次判断时必须标志位true。
+        int j, k = Math.min(n, arr.length);
+        //发生了交换就为true, 没发生就为false，第一次判断时必须标志位true。
+        boolean flag = true;
         while (flag){
-            flag=false;//每次开始排序前，都设置flag为未排序过
+            //每次开始排序前，都设置flag为未排序过
+            flag=false;
             for(j=1; j<k; j++){
-                if(arr[j-1] > arr[j]){//前面的数字大于后面的数字就交换
+                //前面的数字大于后面的数字就交换
+                if(arr[j-1] > arr[j]){
                     //交换a[j-1]和a[j]
                     int temp;
                     temp = arr[j-1];
                     arr[j-1] = arr[j];
                     arr[j]=temp;
-
                     //表示交换过数据;
                     flag = true;
                 }
             }
-            k--;//减小一次排序的尾边界
+            //减小一次排序的尾边界
+            k--;
         }//end while
         return arr;
     }
@@ -79,21 +85,25 @@ public class Sort {
      */
     public static int[] bubble1(int[] arr,int n){
         int j , k;
-        int flag = n > arr.length ? arr.length : n;//flag来记录最后交换的位置，也就是排序的尾边界
+        //flag来记录最后交换的位置，也就是排序的尾边界
+        int flag = Math.min(n, arr.length);
 
-        while (flag > 0){//排序未结束标志
-            k = flag; //k 来记录遍历的尾边界
+        //排序未结束标志
+        while (flag > 0){
+            //k 来记录遍历的尾边界
+            k = flag;
             flag = 0;
 
             for(j=1; j<k; j++){
-                if(arr[j-1] > arr[j]){//前面的数字大于后面的数字就交换
+                //前面的数字大于后面的数字就交换
+                if(arr[j-1] > arr[j]){
                     //交换a[j-1]和a[j]
                     int temp;
                     temp = arr[j-1];
                     arr[j-1] = arr[j];
                     arr[j]=temp;
-                    //表示交换过数据;
-                    flag = j;//记录最新的尾边界.
+                    //表示交换过数据,记录最新的尾边界.
+                    flag = j;
                 }
             }
         }//end while
@@ -122,9 +132,12 @@ public class Sort {
         int minIndex, temp;
         for (int i = 0; i < len - 1; i++) {
             minIndex = i;
-            for (int j = i + 1; j < len; j++) {		//无序区遍历
-                if (nums[j] < nums[minIndex]) {     //寻找最小的数
-                    minIndex = j;                 //将最小数的索引保存
+            //无序区遍历
+            for (int j = i + 1; j < len; j++) {
+                //寻找最小的数
+                if (nums[j] < nums[minIndex]) {
+                    //将最小数的索引保存
+                    minIndex = j;
                 }
             }
             temp = nums[i];
@@ -206,7 +219,8 @@ public class Sort {
      */
     public static int[] shell(int[] arr){
         int len = arr.length,temp,gap = 1;
-        while(gap < len/3) {          //动态定义间隔序列(步长)
+        //动态定义间隔序列(步长)
+        while(gap < len/3) {
             gap =gap*3+1;
         }
         for (; gap> 0; gap = (int) Math.floor(gap/3)) {
@@ -239,8 +253,20 @@ public class Sort {
      * @return
      */
     public static int[] merge(int[] arr){
-        
-        return arr;
+        if(arr == null || arr.length < 2){
+            return arr;
+        }
+        int len = arr.length;
+        int mid = len / 2;
+        return mergeHelper(Arrays.copyOfRange(arr,0,mid),Arrays.copyOfRange(arr,mid+1,len-1));
+    }
+
+
+    private static int[] mergeHelper(int[] arr1,int[] arr2){
+        int[] result = new int[arr1.length + arr2.length];
+        int num = 0;
+
+        return arr1;
     }
     
     
@@ -284,19 +310,21 @@ public class Sort {
      * @author wudi
      * @date 2018年3月7日
      * @param arr
-     * @param left
-     * @param right
+     * @param lo
+     * @param hi
      * @return
      */
     public static int partition(int[] arr,int lo,int hi){
     	//固定的切分方式
         int key=arr[lo];
         while(lo<hi){
-            while(arr[hi]>=key&&hi>lo){//从后半部分向前扫描
+            //从后半部分向前扫描
+            while(arr[hi]>=key&&hi>lo){
                 hi--;
             }
             arr[lo]=arr[hi];
-            while(arr[lo]<=key&&hi>lo){//从前半部分向后扫描
+            //从前半部分向后扫描
+            while(arr[lo]<=key&&hi>lo){
                 lo++;
             }
             arr[hi]=arr[lo];

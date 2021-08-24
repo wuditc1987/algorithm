@@ -21,20 +21,18 @@ public class Search {
         int low = 0;
         int high = array.length - 1;
         int count = 1;
-        while(low <= high)
-        {
+        while(low <= high) {
             int middle = low + (high - low) / 2;
             //int middle = (high + low)/2 此处在极端情况下会出现溢出
-            if(value == array[middle]) //找到则直接返回
-            {
+            //找到则直接返回
+            if(value == array[middle]){
                 return count;
             }
-            if(value > array[middle]) //若数据大于数组中的数，则从middle后一位开始计算，重新查找
-            {
+            //若数据大于数组中的数，则从middle后一位开始计算，重新查找
+            if(value > array[middle]){
                 low = middle + 1;
             }
-            if(value < array[middle])
-            {
+            if(value < array[middle]){
                 high = middle - 1;
             }
             count ++;
