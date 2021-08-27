@@ -1,7 +1,9 @@
 package algorithm.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author wudi
@@ -73,7 +75,37 @@ public class Print {
         System.out.println(list);
     }
 
+    /**
+     * 广度遍历节点
+     * @param root
+     */
+    public static void printTreeNodeBFS(TreeNode root){
+        if(root == null){
+            System.out.println("root is null");
+            return ;
+        }
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            list.add(node.val);
 
+            if(node.left != null){
+                queue.add(node.left);
+            }
+            if(node.right != null){
+                queue.add(node.right);
+            }
+        }
+        System.out.println(list);
+    }
+
+    /**
+     * 快排
+     * @param node
+     * @param list
+     */
     private static void preorder(TreeNode node,List<Integer> list){
         if(node != null){
             list.add(node.val);
@@ -90,6 +122,11 @@ public class Print {
         }
     }
 
+    /**
+     * 归并排序
+     * @param node
+     * @param list
+     */
     private static void postorder(TreeNode node,List<Integer> list){
         if(node != null){
             postorder(node.left,list);

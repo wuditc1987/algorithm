@@ -41,10 +41,22 @@ public class ArraysAlgorithm {
         return res;
     }
 
+    public int removeDuplicates(int[] nums) {
+        int l = 0;
+        for(int i = 0,len = nums.length; i < len;i++){
+            if(i == 0 || nums[i] != nums[i-1]){
+                nums[l++] = nums[i];
+            }
+        }
+        return l;
+    }
+
     public static void main(String[] args) {
-        int[] arr = {1,2,2,4,4,4,7,7,7,7,7,6,5,3,6};
         ArraysAlgorithm test = new ArraysAlgorithm();
-        int[] newnm = test.topKFrequent(arr,2);
-        Print.printArray(newnm);
+//        int[] arr = {1,2,2,4,4,4,7,7,7,7,7,6,5,3,6};
+//        int[] newnm = test.topKFrequent(arr,2);
+//        Print.printArray(newnm);
+        int[] arr = new int[]{1, 1, 3, 3, 4, 4, 5, 6, 7};
+        test.removeDuplicates(arr);
     }
 }

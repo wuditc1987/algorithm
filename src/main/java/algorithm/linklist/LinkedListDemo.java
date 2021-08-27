@@ -3,6 +3,8 @@ package algorithm.linklist;
 import algorithm.utils.ListNode;
 import algorithm.utils.Print;
 
+import java.util.*;
+
 /**
  * @author wudi
  * @version 1.0.0
@@ -10,6 +12,28 @@ import algorithm.utils.Print;
  * @description 链表
  */
 public class LinkedListDemo {
+
+    /**
+     * 21. 合并两个有序链表
+     * https://leetcode-cn.com/problems/merge-two-sorted-lists/
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode mergeTwoLists(ListNode l1,ListNode l2){
+        if(l1 == null){
+            return l2;
+        }else if(l2 == null){
+            return l1;
+        }
+        if(l1.val < l2.val){
+            l1.next = mergeTwoLists(l1.next,l2);
+            return l1;
+        }else {
+            l2.next = mergeTwoLists(l1,l2.next);
+            return l2;
+        }
+    }
 
     /**
      * LeetCode  https://leetcode-cn.com/problems/add-two-numbers/
@@ -47,7 +71,8 @@ public class LinkedListDemo {
     }
 
     /**
-     * 删除重复节点
+     * 面试题 02.01. 移除重复节点
+     * https://leetcode-cn.com/problems/remove-duplicate-node-lcci/
      * @param head
      * @return
      */
@@ -55,15 +80,47 @@ public class LinkedListDemo {
         if(head == null || head.next == null){
             return head;
         }
-        ListNode dummy = new ListNode(0,head);
-        ListNode curr = dummy.next,n = curr.next;
-
-        return dummy.next;
+        Set<Integer> set = new HashSet<>();
+        set.add(head.val);
+        ListNode temp = head;
+        while (temp.next != null){
+            if(set.add(temp.next.val)){
+                temp = temp.next;
+            }else {
+                temp.next = temp.next.next;
+            }
+        }
+        temp.next = null;
+        return head;
     }
 
     /**
-     * https://leetcode-cn.com/problems/reverse-linked-list/
+     * 234. 回文链表
+     * https://leetcode-cn.com/problems/palindrome-linked-list/
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head){
+        ListNode temp = head;
+        Stack<ListNode> stack = new Stack<>();
+        while (temp != null){
+            stack.push(temp);
+            temp = temp.next;
+        }
+
+        while (head != null){
+            if(stack.pop().val != head.val){
+                return false;
+            }
+            head = head.next;
+        }
+        return true;
+    }
+
+    /**
      * 反转链表  解法1
+     * https://leetcode-cn.com/problems/reverse-linked-list/
+     *
      * @param head
      * @return
      */
@@ -78,8 +135,9 @@ public class LinkedListDemo {
     }
 
     /**
-     * https://leetcode-cn.com/problems/reverse-linked-list/
      * 反转链表 解法2
+     * https://leetcode-cn.com/problems/reverse-linked-list/
+     *
      * @param head
      * @return
      */
@@ -138,6 +196,40 @@ public class LinkedListDemo {
 
         return dummy.next;
     }
+
+
+    /**
+     * 143. 重排链表
+     * https://leetcode-cn.com/problems/reorder-list/
+     * @param head
+     */
+    public void reorderList(ListNode head){
+        if(head.next == null){
+            return;
+        }
+
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null){
+            list.add(temp);
+            temp = temp.next;
+        }
+
+        int i = 0,j = list.size() - 1;
+        while (i < j){
+            list.get(i).next = list.get(j);
+            i ++;
+            //需要判断是否已经循环到头了
+            if(i == j){
+                break;
+            }
+            list.get(j).next = list.get(i);
+            j --;
+        }
+        //使用list.get(i).next = null;也可以
+        list.get(j).next = null;
+    }
+
 
     public static void main(String[] args) {
         LinkedListDemo demo = new LinkedListDemo();
