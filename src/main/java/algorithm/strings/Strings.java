@@ -15,23 +15,28 @@ public class Strings {
 
     /**
      * 无重复字符的最长子串 leetcode 3
+     * https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
+     *
      * @param s
+     *
      * @return
      */
     public int lengthOfLongestSubstring(String s) {
-        if(s == null || "".equals(s.trim())){
+        if (s == null || "".equals(s.trim())) {
             return 0;
         }
-        Map<Character,Integer> map = new HashMap<>(s.length());
+        //key 遇到的字符
+        //value 最近一次遇到字符的位置
+        Map<Character, Integer> map = new HashMap<>(s.length());
         //max为最大长度，left为遇到重复的字符最左边字符的位置
-        int max = 0,left = 0;
-        for (int i = 0; i < s.length(); i ++){
+        int max = 0, left = 0;
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(map.containsKey(c)){
-                left = Math.max(left,map.get(c) + 1);
+            if (map.containsKey(c)) {
+                left = Math.max(left, map.get(c) + 1);
             }
-            map.put(c,i);
-            max = Math.max(max,i - left + 1);
+            map.put(c, i);
+            max = Math.max(max, i - left + 1);
         }
 
         return max;
@@ -39,7 +44,7 @@ public class Strings {
 
     public static void main(String[] args) {
         Strings s = new Strings();
-        int l = s.lengthOfLongestSubstring("aaaaa");
+        int l = s.lengthOfLongestSubstring("asdasdfgasdg");
         System.out.println(l);
     }
 }

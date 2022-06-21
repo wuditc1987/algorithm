@@ -3,10 +3,7 @@ package algorithm.tree;
 import algorithm.utils.Print;
 import algorithm.utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @author wudi
@@ -15,6 +12,40 @@ import java.util.Queue;
  * @description TODO
  */
 public class TreeDemo {
+
+    /**
+     *
+     * 637. 二叉树的层平均值
+     * https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/
+     * @param root
+     * @return
+     */
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            double sum = 0.0D;
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                TreeNode node = queue.poll();
+
+                sum += node.val;
+
+                if(node.right != null){
+                    queue.offer(node.right);
+                }
+                if(node.left != null){
+                    queue.offer(node.left);
+                }
+            }
+            list.add(sum/size);
+        }
+        return list;
+    }
 
     /**
      * 112. 路径总和 解法2
@@ -53,6 +84,34 @@ public class TreeDemo {
 
         invertTree(root.left);
         invertTree(root.right);
+        return root;
+    }
+
+    /**
+     * 226. 翻转二叉树 2  BFS
+     * https://leetcode-cn.com/problems/invert-binary-tree/
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree2(TreeNode root) {
+        if(root == null){
+            return root;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            TreeNode tmp = node.left;
+            node.left = node.right;
+            node.right = tmp;
+            if(node.left != null){
+                queue.offer(node.left);
+            }
+            if(node.right != null){
+                queue.offer(node.right);
+            }
+
+        }
         return root;
     }
 
@@ -105,6 +164,82 @@ public class TreeDemo {
             return root;
         }
     }
+
+    /**
+     * 653. 两数之和 IV - 输入 BST
+     * https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/
+     * 实际上和BST没有关系，只要是二叉树即可
+     * @param root
+     * @param k
+     * @return
+     */
+    public boolean findTarget(TreeNode root, int k) {
+        Set<Integer> set = new HashSet<>();
+        return find(root, k, set);
+    }
+    public boolean find(TreeNode root, int k, Set <Integer> set) {
+        if (root == null)
+            return false;
+        if (set.contains(k - root.val))
+            return true;
+        set.add(root.val);
+        return find(root.left, k, set) || find(root.right, k, set);
+    }
+
+
+    /**
+     * 700. 二叉搜索树中的搜索
+     * https://leetcode-cn.com/problems/search-in-a-binary-search-tree/
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root,int val){
+        if (root == null){
+            return null;
+        }
+
+        if(root.val == val){
+            return root;
+        }
+
+        return val < root.val ? searchBST(root.left,val) : searchBST(root.right,val);
+    }
+
+    /**
+     * 1022. 从根到叶的二进制数之和
+     * https://leetcode-cn.com/problems/sum-of-root-to-leaf-binary-numbers/
+     * @param root
+     * @return
+     */
+    public int sumRootToLeaf(TreeNode root) {
+        return helper(root,0);
+    }
+    private int helper(TreeNode node,int sum){
+        if (node == null) return 0;
+        sum = (sum << 1) + node.val;
+        if (node.left == null && node.right == null) return sum;
+
+        return helper(node.left,sum) + helper(node.right,sum);
+    }
+
+    /**
+     * 110. 平衡二叉树
+     * https://leetcode-cn.com/problems/balanced-binary-tree/
+     * @param root
+     * @return
+     */
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) return true;
+        return Math.abs(maxDepth(root.left) - maxDepth(root.right)) <= 1
+                && isBalanced(root.right) && isBalanced(root.left);
+    }
+
+    private int maxDepth(TreeNode node){
+        if (node == null) return 0;
+        return Math.max(maxDepth(node.right),maxDepth(node.left)) + 1;
+    }
+
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);

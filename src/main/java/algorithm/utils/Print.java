@@ -106,7 +106,7 @@ public class Print {
      * @param node
      * @param list
      */
-    private static void preorder(TreeNode node,List<Integer> list){
+    public static void preorder(TreeNode node,List<Integer> list){
         if(node != null){
             list.add(node.val);
             preorder(node.left,list);
@@ -114,7 +114,7 @@ public class Print {
         }
     }
 
-    private static void inorder(TreeNode node,List<Integer> list){
+    public static void inorder(TreeNode node,List<Integer> list){
         if(node != null){
             inorder(node.left,list);
             list.add(node.val);
@@ -127,7 +127,7 @@ public class Print {
      * @param node
      * @param list
      */
-    private static void postorder(TreeNode node,List<Integer> list){
+    public static void postorder(TreeNode node,List<Integer> list){
         if(node != null){
             postorder(node.left,list);
             postorder(node.right,list);
@@ -135,5 +135,10 @@ public class Print {
         }
     }
 
+
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(1);
+    }
 
 }

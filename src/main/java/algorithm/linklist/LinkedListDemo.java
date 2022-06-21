@@ -95,6 +95,40 @@ public class LinkedListDemo {
     }
 
     /**
+     * 移除链表中重复的节点，包含节点本身全部移除
+     * @param head
+     * @return
+     */
+    public ListNode removeDuplicateListNode(ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode slow = dummy.next, fast = head.next ,prev = dummy;
+        while (fast.next != null){
+            if(fast.val != slow.val){
+                fast = fast.next;
+                slow = slow.next;
+            }else {
+                fast = fast.next;
+                while (fast.val == slow.val){
+                    fast = fast.next;
+                }
+                while (prev.next.val != slow.val){
+                    prev = prev.next;
+                }
+
+                prev.next = fast;
+                slow = prev;
+            }
+        }
+        return dummy.next;
+    }
+
+    /**
      * 234. 回文链表
      * https://leetcode-cn.com/problems/palindrome-linked-list/
      * @param head
@@ -161,7 +195,7 @@ public class LinkedListDemo {
     }
 
     /**
-     *
+     * 92. 反转链表 II
      * https://leetcode-cn.com/problems/reverse-linked-list-ii/
      * 翻转从left位置到right位置链表
      * @param head
@@ -229,6 +263,8 @@ public class LinkedListDemo {
         //使用list.get(i).next = null;也可以
         list.get(j).next = null;
     }
+
+    
 
 
     public static void main(String[] args) {
