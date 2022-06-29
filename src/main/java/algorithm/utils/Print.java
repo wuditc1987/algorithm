@@ -28,8 +28,7 @@ public class Print {
             return ;
         }
         for (int a : array){
-            System.out.print(a);
-            System.out.print(",");
+            System.out.print(a + ",");
         }
     }
 
@@ -102,7 +101,7 @@ public class Print {
     }
 
     /**
-     * 快排
+     * 前序遍历
      * @param node
      * @param list
      */
@@ -114,6 +113,11 @@ public class Print {
         }
     }
 
+    /**
+     * 中序遍历
+     * @param node
+     * @param list
+     */
     public static void inorder(TreeNode node,List<Integer> list){
         if(node != null){
             inorder(node.left,list);
@@ -123,7 +127,7 @@ public class Print {
     }
 
     /**
-     * 归并排序
+     * 后序遍历
      * @param node
      * @param list
      */
@@ -133,12 +137,6 @@ public class Print {
             postorder(node.right,list);
             list.add(node.val);
         }
-    }
-
-
-    public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(1);
     }
 
 }

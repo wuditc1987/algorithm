@@ -21,12 +21,12 @@ public class BuildTree {
      * @param nums
      * @return
      */
-    public TreeNode sortedArrayToBST(int[] nums) {
+    public static TreeNode sortedArrayToBST(int[] nums) {
         if (nums == null || nums.length == 0) return null;
         return helper(nums,0,nums.length - 1);
     }
-    public TreeNode helper(int[] nums,int low,int high){
-        if(low == high){
+    public static TreeNode helper(int[] nums,int low,int high){
+        if(low > high){
             return null;
         }
         int mid = low + (high - low) / 2;
@@ -81,5 +81,9 @@ public class BuildTree {
         return head;
     }
 
-
+    public static void main(String[] args) {
+        int[] nums = new int[] {-10,-3,0,5,9};
+        TreeNode node = sortedArrayToBST(nums);
+        Print.printTreeNodeInorder(node);
+    }
 }
