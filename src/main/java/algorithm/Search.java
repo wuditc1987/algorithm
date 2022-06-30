@@ -51,11 +51,33 @@ public class Search {
         
         return 0;
     }
+
+    /**
+     * x 的平方根
+     * https://leetcode.cn/problems/sqrtx/
+     * @param x
+     * @return
+     */
+    public static int mySqrt(int x) {
+        long left = 0, right = x / 2 + 1;
+        while(left < right){
+            long mid = (left + right + 1) >>> 1;
+            long square = mid * mid;
+            if(square > x){
+                right = mid - 1;
+            }else{
+                left = mid;
+            }
+        }
+        return (int)left;
+    }
     
 
     public static void main(String[] args) {
-        int[] nums = new int[]{5,8,14,20,31,55,78,81,93,97,111};
-        System.out.println(binarySearch(nums,111));
+        int x = 2147483647;
+        System.out.println(mySqrt(x));
+//        int[] nums = new int[]{5,8,14,20,31,55,78,81,93,97,111};
+//        System.out.println(binarySearch(nums,111));
     }
 
 }

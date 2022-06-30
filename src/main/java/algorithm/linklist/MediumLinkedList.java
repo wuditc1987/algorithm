@@ -184,6 +184,7 @@ public class MediumLinkedList {
         }
         //让链表成环
         //此处fast为链表的最后一个节点
+        //此时slow是倒数第k个节点的前驱节点
         while (fast.next != null){
             fast = fast.next;
             slow = slow.next;
@@ -241,17 +242,16 @@ public class MediumLinkedList {
             list.add(head);
             head = head.next;
         }
-
-        return helper(list, 0, list.size() - 1);
+        return sortedListToBSTHelper(list, 0, list.size() - 1);
     }
-    private TreeNode helper(List<ListNode> list, int low, int high){
+    private TreeNode sortedListToBSTHelper(List<ListNode> list, int low, int high){
         if (low > high){
             return null;
         }
         int mid = low + (high - low) / 2;
         TreeNode root = new TreeNode(list.get(mid).val);
-        root.left = helper(list, low, mid - 1);
-        root.right = helper(list, mid + 1, high);
+        root.left = sortedListToBSTHelper(list, low, mid - 1);
+        root.right = sortedListToBSTHelper(list, mid + 1, high);
         return root;
     }
 

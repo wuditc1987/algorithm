@@ -15,6 +15,13 @@ import java.util.PriorityQueue;
  */
 public class ArraysAlgorithm {
 
+    /**
+     * 347. 前 K 个高频元素
+     * https://leetcode.cn/problems/top-k-frequent-elements/
+     * @param nums
+     * @param k
+     * @return
+     */
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer,Integer> map = new HashMap<>();
 
@@ -41,9 +48,17 @@ public class ArraysAlgorithm {
         return res;
     }
 
+    /**
+     * 26. 删除有序数组中的重复项
+     * https://leetcode.cn/problems/remove-duplicates-from-sorted-array/
+     * @param nums
+     * @return
+     */
     public int removeDuplicates(int[] nums) {
+        //计数
         int l = 0;
         for(int i = 0,len = nums.length; i < len;i++){
+            //将非重复项全部向前移动，
             if(i == 0 || nums[i] != nums[i-1]){
                 nums[l++] = nums[i];
             }
@@ -58,5 +73,6 @@ public class ArraysAlgorithm {
 //        Print.printArray(newnm);
         int[] arr = new int[]{1, 1, 3, 3, 4, 4, 5, 6, 7};
         test.removeDuplicates(arr);
+        Print.printArray(arr);
     }
 }
