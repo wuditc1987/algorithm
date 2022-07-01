@@ -347,13 +347,15 @@ public class EasyLinkedList {
      * 876. 链表的中间结点
      * 快慢指针解法
      * https://leetcode.cn/problems/middle-of-the-linked-list/
+     *
      * @param head
+     *
      * @return
      */
     public ListNode middleNode(ListNode head) {
         ListNode slow = head, fast = head;
 
-        while (fast != null && fast.next != null){
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
@@ -400,12 +402,11 @@ public class EasyLinkedList {
             curr.next = pre;
             //向后循环1，
             pre = curr;
-            //向后循环2
+            //交换节点
             curr = n;
         }
         return pre;
     }
-
 
 
     public static void main(String[] args) {

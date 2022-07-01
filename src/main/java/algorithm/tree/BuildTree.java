@@ -46,7 +46,7 @@ public class BuildTree {
     public TreeNode increasingBST(TreeNode root) {
         List<Integer> list = new ArrayList<>();
 
-        Print.inorder(root,list);
+        TreeNode.inorder(root,list);
         TreeNode dummy = new TreeNode(-1);
         TreeNode curr = dummy;
         for (Integer num : list){

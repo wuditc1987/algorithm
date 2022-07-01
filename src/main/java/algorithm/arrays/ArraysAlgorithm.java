@@ -23,6 +23,7 @@ public class ArraysAlgorithm {
      * @return
      */
     public int[] topKFrequent(int[] nums, int k) {
+        //key -> 数字， value -> 出现次数
         Map<Integer,Integer> map = new HashMap<>();
 
         for(int num : nums){
@@ -32,9 +33,11 @@ public class ArraysAlgorithm {
         PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(map::get));
 
         for (Integer key : map.keySet()){
+            //当队列数量小于k时，将数字加到队列中
             if(queue.size() < k){
                 queue.add(key);
             }else if(map.get(key) > map.get(queue.peek())){
+                //当队列中的数量大于等于k时，且出现频率大于头部元素时，删除头部元素，并添加新元素
                 queue.remove();
                 queue.add(key);
             }

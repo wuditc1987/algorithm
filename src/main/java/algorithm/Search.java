@@ -39,18 +39,6 @@ public class Search {
         }
         return count;
     }
-    
-    /**
-     * 
-     * @description 斐波那契数列
-     * @author wudi
-     * @date 2018年3月7日
-     * @return
-     */
-    public static int fibonacciSequence(){
-        
-        return 0;
-    }
 
     /**
      * x 的平方根

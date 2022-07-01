@@ -9,7 +9,7 @@ import java.util.*;
  * @author wudi
  * @version 1.0.0
  * @date 2021/8/24
- * @description TODO
+ * @description 二叉树
  */
 public class TreeDemo {
 
@@ -259,7 +259,6 @@ public class TreeDemo {
         if (node == null) return 0;
         return Math.max(maxDepth(node.right), maxDepth(node.left)) + 1;
     }
-
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
