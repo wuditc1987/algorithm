@@ -1,5 +1,7 @@
 package algorithm.dp;
 
+import java.util.List;
+
 /**
  * @author wudi
  * @version 1.0.0
@@ -57,6 +59,36 @@ public class DynamicProgramming {
             minusOne = res;
             n--;
         }
+        return 0;
+    }
+
+
+    /**
+     * 120. 三角形最小路径和
+     * https://leetcode.cn/problems/triangle/
+     * @param triangle
+     * @return
+     */
+    public static int minimumTotal(List<List<Integer>> triangle) {
+        int[] mini = new int[triangle.size() + 1];
+
+        for (int i = triangle.size() - 1; i >= 0; i--){
+            List<Integer> list = triangle.get(i);
+            for (int j = 0; j < list.size(); j++){
+                mini[j] = list.get(j) + Math.min(mini[j], mini[j+1]);
+            }
+        }
+        return mini[0];
+    }
+
+    /**
+     * 300. 最长递增子序列
+     * https://leetcode.cn/problems/longest-increasing-subsequence/
+     * @param nums
+     * @return
+     */
+    public int lengthOfLIS(int[] nums) {
+
         return 0;
     }
 

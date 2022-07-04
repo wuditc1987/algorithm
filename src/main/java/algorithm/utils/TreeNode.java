@@ -70,4 +70,14 @@ public class TreeNode {
             list.add(node.val);
         }
     }
+
+    /**
+     * 二叉树最大深度
+     * @param node
+     * @return
+     */
+    public static int maxDepth(TreeNode node) {
+        if (node == null) return 0;
+        return Math.max(maxDepth(node.right), maxDepth(node.left)) + 1;
+    }
 }

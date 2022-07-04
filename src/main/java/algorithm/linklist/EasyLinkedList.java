@@ -41,6 +41,7 @@ public class EasyLinkedList {
     /**
      * 160. 相交链表
      * https://leetcode.cn/problems/intersection-of-two-linked-lists/
+     * https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/
      *
      * @param headA
      * @param headB
@@ -198,7 +199,7 @@ public class EasyLinkedList {
     /**
      * 203. 移除链表元素
      * https://leetcode.cn/problems/remove-linked-list-elements/
-     *
+     * https://leetcode.cn/problems/shan-chu-lian-biao-de-jie-dian-lcof/
      * @param head
      * @param val
      *

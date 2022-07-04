@@ -31,6 +31,27 @@ public class BinarySearchTree {
         return null;
     }
 
+    /**
+     * 700. 二叉搜索树中的搜索
+     * https://leetcode-cn.com/problems/search-in-a-binary-search-tree/
+     *
+     * @param root
+     * @param val
+     *
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.val == val) {
+            return root;
+        }
+
+        return val < root.val ? searchBST(root.left, val) : searchBST(root.right, val);
+    }
+
     public static void main(String[] args) {
 
     }

@@ -12,7 +12,7 @@ import java.util.Set;
  * @author wudi
  * @version 1.0.0
  * @date 2022/6/28
- * @description TODO
+ * @description 中等难度
  */
 public class MediumLinkedList {
 
