@@ -1,6 +1,7 @@
 package algorithm.linklist;
 
 import algorithm.utils.ListNode;
+import algorithm.utils.Print;
 import algorithm.utils.TreeNode;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Set;
  * @version 1.0.0
  * @date 2022/6/28
  * @description 中等难度
+ *
+ * 技巧1. 修改(删除，新增)链表节点时，需要构建一个dummy节点作为辅助，最后返回dummy.next即可。
  */
 public class MediumLinkedList {
 
@@ -28,11 +31,10 @@ public class MediumLinkedList {
 
     //// ==================== 中等难度 Medium difficulty ==================
     /**
-     * LeetCode  https://leetcode-cn.com/problems/add-two-numbers/
-     *
+     * 2. 两数相加
+     * https://leetcode-cn.com/problems/add-two-numbers/
      * @param l1
      * @param l2
-     *
      * @return
      */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -66,80 +68,35 @@ public class MediumLinkedList {
     }
 
     /**
-     * 92. 反转链表 II
-     * https://leetcode-cn.com/problems/reverse-linked-list-ii/
-     * 翻转从left位置到right位置链表
-     *
+     * 19. 删除链表的倒数第 N 个结点  TODO
+     * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
      * @param head
-     * @param left
-     * @param right
-     *
+     * @param n
      * @return
      */
-    public ListNode reverseFrom(ListNode head, int left, int right) {
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null || n == 0){
+            return head;
+        }
         ListNode dummy = new ListNode(-1, head);
-
-        ListNode pre = dummy;
-        for (int i = 0; i < left - 1; i++) {
-            pre = pre.next;
+        ListNode temp = dummy.next;
+        //计算链表长度
+        int len = 0;
+        while (temp != null){
+            len ++;
+            temp = temp.next;
         }
-
-        ListNode leftNode = pre.next;
-        ListNode rightNode = pre;
-        for (int i = 0; i < right - left + 1; i++) {
-            rightNode = rightNode.next;
+        temp = dummy;
+        //循环到倒数第n个节点的前驱节点位置
+        for (int i = 0; i < len - n; i ++){
+            temp = temp.next;
         }
-        ListNode curr = rightNode.next;
-
-        //切断指针
-        pre.next = null;
-        rightNode.next = null;
-        //翻转链表 leftNode为需要翻转的子链表
-        reverse(leftNode);
-
-        //翻转以后rightNode就变成了子链表的头部
-        pre.next = rightNode;
-        leftNode.next = curr;
-
+        temp.next = temp.next.next;
         return dummy.next;
     }
 
-
     /**
-     * 143. 重排链表
-     * https://leetcode-cn.com/problems/reorder-list/
-     *
-     * @param head
-     */
-    public void reorderList(ListNode head) {
-        if (head.next == null) {
-            return;
-        }
-
-        ListNode temp = head;
-        List<ListNode> list = new ArrayList<>();
-        while (temp != null) {
-            list.add(temp);
-            temp = temp.next;
-        }
-
-        int i = 0, j = list.size() - 1;
-        while (i < j) {
-            list.get(i).next = list.get(j);
-            i++;
-            //需要判断是否已经循环到头了
-            if (i == j) {
-                break;
-            }
-            list.get(j).next = list.get(i);
-            j--;
-        }
-        //使用list.get(i).next = null;也可以
-        list.get(j).next = null;
-    }
-
-    /**
-     * 24. 两两交换链表中的节点
+     * 24. 两两交换链表中的节点  TODO
      * https://leetcode.cn/problems/swap-nodes-in-pairs/
      * @param head
      * @return
@@ -148,8 +105,11 @@ public class MediumLinkedList {
         if (head == null || head.next == null){
             return head;
         }
+        // 保存新的头节点
         ListNode newHead = head.next;
+        //递归置换节点
         head.next = swapPairs(newHead.next);
+        //新节点后继节点指向原始头节点
         newHead.next = head;
         return newHead;
     }
@@ -182,15 +142,16 @@ public class MediumLinkedList {
         for (int i = 0; i < k; i ++){
             fast = fast.next;
         }
-        //让链表成环
+
         //此处fast为链表的最后一个节点
         //此时slow是倒数第k个节点的前驱节点
         while (fast.next != null){
             fast = fast.next;
             slow = slow.next;
         }
-
+        //让链表成环
         fast.next = head;
+        //最新的头节点是slow节点的后继节点
         ListNode newHead = slow.next;
         slow.next = null;
 
@@ -228,6 +189,46 @@ public class MediumLinkedList {
     }
 
     /**
+     * 92. 反转链表 II
+     * https://leetcode-cn.com/problems/reverse-linked-list-ii/
+     * 翻转从left位置到right位置链表
+     *
+     * @param head
+     * @param left
+     * @param right
+     *
+     * @return
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode dummy = new ListNode(-1, head);
+
+        ListNode pre = dummy;
+        for (int i = 0; i < left - 1; i++) {
+            pre = pre.next;
+        }
+
+        ListNode leftNode = pre.next;
+        ListNode rightNode = pre;
+        for (int i = 0; i < right - left + 1; i++) {
+            rightNode = rightNode.next;
+        }
+        ListNode curr = rightNode.next;
+
+        //切断指针
+        pre.next = null;
+        rightNode.next = null;
+        //翻转链表 leftNode为需要翻转的子链表
+        reverse(leftNode);
+
+        //翻转以后rightNode就变成了子链表的头部
+        pre.next = rightNode;
+        leftNode.next = curr;
+
+        return dummy.next;
+    }
+
+
+    /**
      * 109. 有序链表转换二叉搜索树
      * https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/
      * @param head
@@ -256,34 +257,6 @@ public class MediumLinkedList {
     }
 
     /**
-     * 19. 删除链表的倒数第 N 个结点
-     * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
-     * @param head
-     * @param n
-     * @return
-     */
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null || n == 0){
-            return head;
-        }
-        ListNode dummy = new ListNode(-1, head);
-        ListNode temp = dummy.next;
-        //计算链表长度
-        int len = 0;
-        while (temp != null){
-            len ++;
-            temp = temp.next;
-        }
-        temp = dummy;
-        //循环到倒数第n个节点的前驱节点位置
-        for (int i = 0; i < len - n; i ++){
-            temp = temp.next;
-        }
-        temp.next = temp.next.next;
-        return dummy.next;
-    }
-
-    /**
      * 142. 环形链表 II
      * https://leetcode.cn/problems/linked-list-cycle-ii/
      * @param head
@@ -305,6 +278,74 @@ public class MediumLinkedList {
     }
 
     /**
+     * 143. 重排链表
+     * https://leetcode-cn.com/problems/reorder-list/
+     *
+     * @param head
+     */
+    public void reorderList(ListNode head) {
+        if (head.next == null) {
+            return;
+        }
+
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+
+        int i = 0, j = list.size() - 1;
+        while (i < j) {
+            list.get(i).next = list.get(j);
+            i++;
+            //需要判断是否已经循环到头了
+            if (i == j) {
+                break;
+            }
+            list.get(j).next = list.get(i);
+            j--;
+        }
+        //使用list.get(i).next = null;也可以
+        list.get(j).next = null;
+    }
+
+    /**
+     * 148. 排序链表  TODO
+     * https://leetcode.cn/problems/sort-list/
+     * @param head
+     * @return
+     */
+    public static ListNode sortList(ListNode head) {
+        if (head == null || head.next == null){
+            return head;
+        }
+        return sortListSortHelper(head, null);
+    }
+
+    // 分离链表  归并排序
+    private static ListNode sortListSortHelper(ListNode start, ListNode end){
+        if (start == end){
+            return start;
+        }
+        //使用快慢指针二分链表
+        ListNode slow = start, fast = start;
+        while (fast != end && fast.next != end){
+            //循环到最后时slow是中间节点的前驱节点
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //高位节点
+        ListNode high = sortListSortHelper(slow.next, end);
+        // 断开指针,避免变成环形链表
+        slow.next = null;
+        //低位节点
+        ListNode low = sortListSortHelper(start, slow);
+        //合并链表
+        return new EasyLinkedList().mergeTwoLists(low, high);
+    }
+
+    /**
      * 1669. 合并两个链表
      * https://leetcode.cn/problems/merge-in-between-linked-lists/
      * @param list1
@@ -319,7 +360,7 @@ public class MediumLinkedList {
         }
 
         ListNode dummy = new ListNode(-1, list1);
-        ListNode pre = dummy, curr = dummy;
+        ListNode pre = dummy, curr = dummy.next;
         //获得a位置之前的节点
         for (int i = 0; i < a; i++){
             pre = pre.next;
@@ -362,4 +403,17 @@ public class MediumLinkedList {
         prev.next = slow.next;
         return dummy.next;
     }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(10);
+        head.next = new ListNode(8);
+        head.next.next = new ListNode(11);
+        head.next.next.next = new ListNode(3);
+        head.next.next.next.next = new ListNode(6);
+        head.next.next.next.next.next = new ListNode(1);
+        head.next.next.next.next.next.next = new ListNode(5);
+        ListNode newNode = removeNthFromEnd(head, 2);
+        Print.printListNode(newNode);
+    }
+
 }

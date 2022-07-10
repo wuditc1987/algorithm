@@ -2,18 +2,45 @@ package algorithm.arrays;
 
 import algorithm.utils.Print;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author wudi
  * @version 1.0.0
  * @date 2021/8/24
- * @description TODO
+ * @description 数组相关算法
  */
 public class ArraysAlgorithm {
+
+    /**
+     * 26. 删除有序数组中的重复项
+     * https://leetcode.cn/problems/remove-duplicates-from-sorted-array/
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        //计数
+        int l = 0;
+        for(int i = 0,len = nums.length; i < len;i++){
+            //将非重复项全部向前移动，
+            if(i == 0 || nums[i] != nums[i-1]){
+                nums[l++] = nums[i];
+            }
+        }
+        return l;
+    }
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * https://leetcode.cn/problems/kth-largest-element-in-an-array/
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
 
     /**
      * 347. 前 K 个高频元素
@@ -49,24 +76,6 @@ public class ArraysAlgorithm {
             res[--k] = queue.remove();
         }
         return res;
-    }
-
-    /**
-     * 26. 删除有序数组中的重复项
-     * https://leetcode.cn/problems/remove-duplicates-from-sorted-array/
-     * @param nums
-     * @return
-     */
-    public int removeDuplicates(int[] nums) {
-        //计数
-        int l = 0;
-        for(int i = 0,len = nums.length; i < len;i++){
-            //将非重复项全部向前移动，
-            if(i == 0 || nums[i] != nums[i-1]){
-                nums[l++] = nums[i];
-            }
-        }
-        return l;
     }
 
     public static void main(String[] args) {

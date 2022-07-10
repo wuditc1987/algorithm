@@ -9,11 +9,11 @@ import java.util.Queue;
  * @author wudi
  * @version 1.0.0
  * @date 2021/8/22
- * @description TODO
+ * @description 打印类
  */
 public class Print {
 
-    public static void printNode(final ListNode node) {
+    public static void printListNode(final ListNode node) {
         ListNode tmp = node;
         while (tmp != null) {
             System.out.print(tmp.val);
@@ -102,6 +102,18 @@ public class Print {
             }
         }
         System.out.println(list);
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(11);
+        root.left.left = new TreeNode(8);
+        root.left.right = new TreeNode(7);
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(5);
+
+        Print.printTreeNodeBFS(root);
     }
 
 }

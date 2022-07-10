@@ -1,5 +1,6 @@
 package algorithm.tree;
 
+import algorithm.utils.Print;
 import algorithm.utils.TreeNode;
 
 import java.util.*;
@@ -13,7 +14,76 @@ import java.util.*;
 public class MediumTreeDemo {
 
     /**
-     * 226. 翻转二叉树
+     * 98. 验证二叉搜索树
+     * https://leetcode.cn/problems/validate-binary-search-tree
+     * https://leetcode.cn/problems/legal-binary-search-tree-lcci/
+     *
+     * 右子树的左子树的值如果不在
+     *
+     * @param root
+     * @return
+     */
+    public boolean isValidBST(TreeNode root) {
+        return isValidBSTHelper(root, Long.MAX_VALUE, Long.MIN_VALUE);
+    }
+
+    public boolean isValidBSTHelper(TreeNode node, long max, long min){
+        if(node == null){
+            return true;
+        }
+        if(node.val >= max || node.val <= min){
+            return false;
+        }
+        return isValidBSTHelper(node.left, node.val, min) && isValidBSTHelper(node.right, max, node.val);
+    }
+
+    /**
+     * 98. 验证二叉搜索树  解法2
+     * @param root
+     * @return
+     */
+    public boolean isValidBST2(TreeNode root) {
+        if (root == null){
+            return true;
+        }
+        List<Integer> list = new ArrayList<>();
+        TreeNode.inorder(root, list);
+        for (int i = 1; i < list.size(); i++){
+            if (list.get(i - 1) >= list.get(i)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 114. 二叉树展开为链表
+     * https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
+     *
+     * @param root
+     */
+    public void flatten(TreeNode root) {
+        if (root == null) return;
+
+        List<TreeNode> list = new ArrayList<>();
+        flattenPreorder(root, list);
+        for (int i = 0, len = list.size(); i < len - 1; i++) {
+            TreeNode node = list.get(i);
+            node.right = list.get(i + 1);
+            node.left = null;
+        }
+        Print.printTreeNodePreorder(root);
+    }
+    private void flattenPreorder(TreeNode node, List<TreeNode> list) {
+        if (node != null) {
+            list.add(node);
+            flattenPreorder(node.left, list);
+            flattenPreorder(node.right, list);
+        }
+    }
+
+    /**
+     * 226. 翻转二叉树 DFS
      * https://leetcode-cn.com/problems/invert-binary-tree/
      * https://leetcode.cn/problems/er-cha-shu-de-jing-xiang-lcof/
      *
@@ -88,26 +158,6 @@ public class MediumTreeDemo {
         } else {
             return root;
         }
-    }
-
-    /**
-     * 面试题 04.05. 合法二叉搜索树
-     * https://leetcode.cn/problems/legal-binary-search-tree-lcci/
-     * @param root
-     * @return
-     */
-    public boolean isValidBST(TreeNode root) {
-        return isValidBSTHelper(root, Long.MAX_VALUE, Long.MIN_VALUE);
-    }
-
-    public boolean isValidBSTHelper(TreeNode node, long max, long min){
-        if(node == null){
-            return true;
-        }
-        if(node.val >= max || node.val <= min){
-            return false;
-        }
-        return isValidBSTHelper(node.left, node.val, min) && isValidBSTHelper(node.right, max, node.val);
     }
 
 }

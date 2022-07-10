@@ -13,9 +13,6 @@ import java.util.*;
  */
 public class EasyLinkedList {
 
-
-    //
-
     /**
      * 141. 环形链表
      * https://leetcode.cn/problems/linked-list-cycle/
@@ -127,7 +124,7 @@ public class EasyLinkedList {
 
     /**
      * 剑指 Offer 06. 从尾到头打印链表
-     * https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/submissions/
+     * https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/
      *
      * @param head
      *
@@ -197,7 +194,7 @@ public class EasyLinkedList {
     }
 
     /**
-     * 203. 移除链表元素
+     * 203. 移除链表元素  TODO
      * https://leetcode.cn/problems/remove-linked-list-elements/
      * https://leetcode.cn/problems/shan-chu-lian-biao-de-jie-dian-lcof/
      * @param head

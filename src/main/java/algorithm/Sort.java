@@ -246,7 +246,9 @@ public class Sort {
     /**
      * 归并排序
      *
-     * @param arr
+     * @param arr 需要排序的数组
+     * @param low 需要排序的起始位置
+     * @param high 需要排序的结束位置
      *
      * @return
      * @description 和选择排序一样，归并排序的性能不受输入数据的影响，但表现比选择排序好的多，因为始终都是O(n log n）的时间复杂度。代价是需要额外的内存空间。
@@ -261,35 +263,35 @@ public class Sort {
      * @author wudi
      * @date 2018年3月8日
      */
-    public static void mergeSort(int[] arr, int left, int right) {
-        if (left == right) {
+    public static void mergeSort(int[] arr, int low, int high) {
+        if (low == high) {
             return;
         }
         //分成两半
-        int mid = left + (right - left) / 2;
+        int mid = low + (high - low) / 2;
         //左边排序
-        mergeSort(arr, left, mid);
+        mergeSort(arr, low, mid);
         //右边排序
-        mergeSort(arr, mid + 1, right);
+        mergeSort(arr, mid + 1, high);
 
-        merge(arr, left, mid + 1, right);
+        merge(arr, low, mid + 1, high);
     }
 
     /**
      * @param arr 数组
-     * @param leftPtr  指数组最左边
-     * @param rightPtr  指数组中间
-     * @param rightBound  数组最右边
+     * @param left  指数组最左边
+     * @param mid1  指数组中间 + 1
+     * @param right  数组最右边
      */
-    static void merge(int[] arr, int leftPtr, int rightPtr, int rightBound) {
-        int mid = rightPtr - 1;
-        int[] temp = new int[rightBound - leftPtr + 1];
+    private static void merge(int[] arr, int left, int mid1, int right) {
+        int mid = mid1 - 1;
+        int[] temp = new int[right - left + 1];
 
-        int i = leftPtr;
-        int j = rightPtr;
+        int i = left;
+        int j = mid1;
         int k = 0;
 
-        while (i <= mid && j <= rightBound) {
+        while (i <= mid && j <= right) {
             if (arr[i] <= arr[j]) {
                 temp[k++] = arr[i++];
             } else {
@@ -302,11 +304,12 @@ public class Sort {
             temp[k++] = arr[i++];
         }
         //将左边剩余的归并
-        while (j <= rightBound) {
+        while (j <= right) {
             temp[k++] = arr[j++];
         }
 
-        if (temp.length > 0) System.arraycopy(temp, 0, arr, leftPtr, temp.length);
+        if (temp.length > 0)
+            System.arraycopy(temp, 0, arr, left, temp.length);
     }
 
 
@@ -360,7 +363,7 @@ public class Sort {
         //固定的切分方式
         int key = arr[lo];
         while (lo < hi) {
-            // 前后顺序不能变
+            // 前后顺序不能变,否则组数中元素的位置就变了
             //1.从后半部分向前扫描
             while (arr[hi] >= key && hi > lo) {
                 hi--;

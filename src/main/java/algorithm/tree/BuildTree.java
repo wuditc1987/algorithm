@@ -41,6 +41,7 @@ public class BuildTree {
     /**
      * 897. 递增顺序搜索树
      * https://leetcode-cn.com/problems/increasing-order-search-tree/
+     * https://leetcode.cn/problems/NYBBNL/
      * 与下题相同
      * @param root
      * @return
@@ -136,7 +137,7 @@ public class BuildTree {
         for (int i = 0; i < inorder.length; i++){
             map.put(inorder[i], i);
         }
-        return buildTreePostHelper(inorder, 0, inorder.length, postorder, 0, postorder.length, map);
+        return buildTreePostHelper(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1, map);
     }
     private static TreeNode buildTreePostHelper(int[] inorder, int iStart, int iEnd, int[] postorder, int pStart, int pEnd, Map<Integer, Integer> map){
         if (pStart > pEnd){
@@ -146,15 +147,17 @@ public class BuildTree {
         int rootIndex = map.get(rootVal);
         TreeNode root = new TreeNode(rootVal);
 
-        int offset = pEnd - rootIndex;
+        int offset = iEnd - rootIndex;
         root.left = buildTreePostHelper(inorder, iStart, rootIndex - 1, postorder, pStart, pEnd - offset - 1, map);
         root.right = buildTreePostHelper(inorder, rootIndex + 1, iEnd, postorder, pEnd - offset, pEnd - 1, map);
         return root;
     }
 
     public static void main(String[] args) {
-        int[] nums = new int[] {-10,-3,0,5,9};
-        TreeNode node = sortedArrayToBST(nums);
-        Print.printTreeNodeInorder(node);
+        int[] inorder = new int[] {9,3,15,20,7};
+        int[] postorder = new int[]{9,15,7,20,3};
+        TreeNode root = buildTreePost(inorder, postorder);
+
+
     }
 }

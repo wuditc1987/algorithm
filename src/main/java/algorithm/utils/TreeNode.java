@@ -1,6 +1,9 @@
 package algorithm.utils;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author wudi
@@ -79,5 +82,25 @@ public class TreeNode {
     public static int maxDepth(TreeNode node) {
         if (node == null) return 0;
         return Math.max(maxDepth(node.right), maxDepth(node.left)) + 1;
+    }
+
+    public static List<Integer> bfs(TreeNode node){
+        List<Integer> list = new ArrayList<>();
+        if (node == null){
+            return list;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(node);
+        while (!queue.isEmpty()){
+            TreeNode temp = queue.poll();
+            list.add(temp.val);
+            if (temp.right != null){
+                queue.offer(temp.right);
+            }
+            if (temp.left != null){
+                queue.offer(temp.left);
+            }
+        }
+        return list;
     }
 }
