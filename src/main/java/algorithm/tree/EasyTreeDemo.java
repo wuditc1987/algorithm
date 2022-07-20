@@ -205,6 +205,27 @@ public class EasyTreeDemo {
     }
 
     /**
+     * 563. 二叉树的坡度
+     * https://leetcode.cn/problems/binary-tree-tilt/
+     * @param root
+     * @return
+     */
+    int findTiltAns = 0;
+    public int findTilt(TreeNode root) {
+        findTiltHelper(root);
+        return findTiltAns;
+    }
+    private int findTiltHelper(TreeNode node){
+        if (node == null){
+            return 0;
+        }
+        int leftNodeSum = findTiltHelper(node.left);
+        int rightNodeSum = findTiltHelper(node.right);
+        findTiltAns += Math.abs(leftNodeSum - rightNodeSum);
+        return leftNodeSum + rightNodeSum + node.val;
+    }
+
+    /**
      * 572. 另一棵树的子树
      * https://leetcode.cn/problems/subtree-of-another-tree/
      * @param root
