@@ -411,15 +411,14 @@ public class EasyLinkedList {
         ListNode l2 = new ListNode(1);
         l2.next = new ListNode(1);
         l2.next.next = new ListNode(0);
-//        l2.next.next.next = new ListNode(1);
-        System.out.println(getDecimalValue2(l2));
-//        l2.next.next.next.next = new ListNode(3);
-//        l2.next.next.next.next.next = new ListNode(4);
-//        l2.next.next.next.next.next.next = new ListNode(5);
-//        l2.next.next.next.next.next.next.next = new ListNode(5);
-//        ListNode node = removeDuplicateListNode(l2);
-//        ListNode node = demo.addTwoNumbers(l1,l2);
-//        Print.printNode(node);
+        l2.next.next.next = new ListNode(1);
+        l2.next.next.next.next = new ListNode(3);
+        l2.next.next.next.next.next = new ListNode(4);
+        l2.next.next.next.next.next.next = new ListNode(5);
+        l2.next.next.next.next.next.next.next = new ListNode(5);
+
+//        ListNode node = removeDupNodesIncludeItself(l2);
+//        Print.printListNode(node);
     }
 
 }

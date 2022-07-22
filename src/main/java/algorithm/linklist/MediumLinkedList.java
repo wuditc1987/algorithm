@@ -33,6 +33,7 @@ public class MediumLinkedList {
     /**
      * 2. 两数相加
      * https://leetcode-cn.com/problems/add-two-numbers/
+     * https://leetcode.cn/problems/sum-lists-lcci/
      * @param l1
      * @param l2
      * @return
@@ -173,14 +174,20 @@ public class MediumLinkedList {
         // 前驱节点、当前节点
         ListNode pre = dummy, curr = head;
         while (curr != null && curr.next != null){
+            //当前节点的值等于后继结点的值
             if (curr.val == curr.next.val){
+                //记录当前节点的值
                 int val = curr.val;
+                // 如果发现后置节点和当前节点的值相同，则一直向后找，直到值不同为止
                 while (curr.next != null && curr.next.val == val){
                     curr = curr.next;
                 }
+                //移动当前节点位置，此时curr.next.val != val
                 curr = curr.next;
+                //将前置节点的后继指针指向当前节点
                 pre.next = curr;
             }else {
+                // 正常向后移动指针
                 curr = curr.next;
                 pre = pre.next;
             }
@@ -403,6 +410,8 @@ public class MediumLinkedList {
         prev.next = slow.next;
         return dummy.next;
     }
+
+
 
     public static void main(String[] args) {
         ListNode head = new ListNode(10);
