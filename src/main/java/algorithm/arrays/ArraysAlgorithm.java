@@ -43,6 +43,46 @@ public class ArraysAlgorithm {
     }
 
     /**
+     * 268. 丢失的数字 解法1 排序
+     * https://leetcode.cn/problems/missing-number/
+     * @param nums
+     * @return
+     */
+    public int missingNumber(int[] nums) {
+        Arrays.sort(nums);
+        int missing = nums.length;
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] != i){
+                return i;
+            }
+        }
+        return missing;
+    }
+
+    /**
+     *
+     * 268. 丢失的数字 解法2 异或
+     * https://leetcode.cn/problems/missing-number/
+     * 数组 nums 中有 n 个数，在这 n 个数的后面添加从 0 到 n 的每个整数，则添加了 n+1 个整数，共有 2n+1 个整数。
+     * 在 2n+1 个整数中，丢失的数字只在后面 n+1 个整数中出现一次，其余的数字在前面 n 个整数中（即数组中）和后面 n+1 个整数中各出现一次，即其余的数字都出现了两次。
+     * 根据出现的次数的奇偶性，可以使用按位异或运算得到丢失的数字。按位异或运算 ⊕ 满足交换律和结合律，且对任意整数 x 都满足 x⊕x=0 和 x⊕0=x。
+     * 由于上述 2n+1 个整数中，丢失的数字出现了一次，其余的数字都出现了两次，因此对上述 2n+1 个整数进行按位异或运算，结果即为丢失的数字。
+     * @param nums
+     * @return
+     */
+    public int missingNumber2(int[] nums) {
+        int missing = 0;
+        int n = nums.length;
+        for (int i = 0; i < n; i++){
+            missing ^= nums[i];
+        }
+        for (int i = 0; i <= n; i++){
+            missing ^= i;
+        }
+        return missing;
+    }
+
+    /**
      * 347. 前 K 个高频元素
      * https://leetcode.cn/problems/top-k-frequent-elements/
      * @param nums

@@ -4,10 +4,7 @@ import algorithm.utils.ListNode;
 import algorithm.utils.Print;
 import algorithm.utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author wudi
@@ -196,6 +193,35 @@ public class MediumLinkedList {
     }
 
     /**
+     * 86. 分隔链表
+     * https://leetcode.cn/problems/partition-list/
+     * @param head
+     * @param x
+     * @return
+     */
+    public ListNode partition(ListNode head, int x) {
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode low = new ListNode(x), lowHead = low;
+        ListNode high = new ListNode(x), highHead = high;
+        while (head != null){
+            if (x > head.val){
+                low.next = head;
+                low = low.next;
+            }else {
+                high.next = head;
+                high = high.next;
+            }
+            head = head.next;
+        }
+        high.next = null;
+        low.next = highHead.next;
+        return lowHead.next;
+    }
+
+    /**
      * 92. 反转链表 II
      * https://leetcode-cn.com/problems/reverse-linked-list-ii/
      * 翻转从left位置到right位置链表
@@ -266,6 +292,7 @@ public class MediumLinkedList {
     /**
      * 142. 环形链表 II
      * https://leetcode.cn/problems/linked-list-cycle-ii/
+     * https://leetcode.cn/problems/c32eOV/
      * @param head
      * @return
      */
@@ -318,7 +345,43 @@ public class MediumLinkedList {
     }
 
     /**
-     * 148. 排序链表  TODO
+     * 147. 对链表进行插入排序
+     * https://leetcode.cn/problems/insertion-sort-list/
+     * @param head
+     * @return
+     */
+    public static ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null){
+            return head;
+        }
+        // 两个节点永远齐头并进
+        ListNode curr = head.next, pre = head;
+        // 创建虚拟节点
+        ListNode dummy = new ListNode(Integer.MIN_VALUE, head);
+
+        while (curr != null){
+            if (curr.val >= pre.val){
+                pre = pre.next;
+            }else {
+                // 从链表头开始判断
+                ListNode dummyPre = dummy;
+                while (dummyPre.next.val <= curr.val){
+                    dummyPre = dummyPre.next;
+                }
+
+                //前驱节点指针指向后继节点的next元素(交换位置)
+                pre.next = curr.next;
+                curr.next = dummyPre.next;
+                dummyPre.next = curr;
+
+            }
+            curr = pre.next;
+        }
+        return dummy.next;
+    }
+
+    /**
+     * 148. 排序链表
      * https://leetcode.cn/problems/sort-list/
      * @param head
      * @return
@@ -350,6 +413,119 @@ public class MediumLinkedList {
         ListNode low = sortListSortHelper(start, slow);
         //合并链表
         return new EasyLinkedList().mergeTwoLists(low, high);
+    }
+
+    /**
+     * 328. 奇偶链表
+     * 将所有 "索引" 为奇数的节点和索引为偶数的节点分别组合在一起，然后返回重新排序的列表。
+     * https://leetcode.cn/problems/odd-even-linked-list/
+     * @param head
+     * @return
+     */
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null){
+            return null;
+        }
+        // 记录偶数索引头结点位置
+        ListNode evenHead = head.next;
+        // 记录奇数和偶数索引节点位置
+        ListNode odd = head, even = evenHead;
+        while (even != null && even.next != null){
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+        odd.next = evenHead;
+        return head;
+    }
+
+    /**
+     * 1019. 链表中的下一个更大节点
+     * https://leetcode.cn/problems/next-greater-node-in-linked-list/
+     * @param head
+     * @return
+     */
+    public int[] nextLargerNodes(ListNode head) {
+        if (head == null){
+            return null;
+        }
+        ListNode reversed = reverse(head);
+        Deque<Integer> stack = new LinkedList<>();
+        ListNode temp = reversed;
+        int size = 0;
+        while (temp != null){
+            temp = temp.next;
+            size ++;
+        }
+        int[] res = new int[size];
+        int index = size - 1;
+        while (index >= 0){
+            while(!stack.isEmpty() && reversed.val >= stack.peek()){
+                stack.poll();
+            }
+            res[index--] = stack.isEmpty() ? 0 : stack.peek();
+            stack.push(reversed.val);
+            reversed = reversed.next;
+        }
+        return res;
+    }
+
+    /**
+     * 1171. 从链表中删去总和值为零的连续节点
+     * https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list/
+     * @param head
+     * @return
+     */
+    public ListNode removeZeroSumSublists(ListNode head) {
+        ListNode dummy = new ListNode(0, head);
+        Map<Integer, ListNode> map = new HashMap<>();
+        // 前缀和
+        // 首次建立hash表，同一和出现多次会被覆盖，记录sum最后一次出现的节点
+        int sum = 0;
+        for (ListNode d = dummy; d != null ; d = d.next){
+            sum += d.val;
+            map.put(sum, d);
+        }
+        sum = 0;
+        // 当map中含有sum包含的节点，说明出现了节点值和为0的节点，直接删除即可
+        for (ListNode d = dummy; d != null; d = d.next){
+            sum += d.val;
+            d.next = map.get(sum).next;
+        }
+        return dummy.next;
+    }
+
+    /**
+     * 1367. 二叉树中的列表
+     * https://leetcode.cn/problems/linked-list-in-binary-tree/
+     * 与 https://leetcode.cn/problems/subtree-of-another-tree/ 类似
+     * @param head
+     * @param root
+     * @return
+     */
+    public boolean isSubPath(ListNode head, TreeNode root) {
+        if(head == null){
+            return true;
+        }
+        if (root == null){
+            return false;
+        }
+        return isSubPathHelper(head, root)
+                || isSubPath(head, root.left) || isSubPath(head, root.right);
+    }
+
+    public boolean isSubPathHelper(ListNode head, TreeNode root){
+        if(head == null){
+            return true;
+        }
+        if (root == null){
+            return false;
+        }
+        if (head.val != root.val){
+            return false;
+        }
+        return isSubPathHelper(head.next, root.left) || isSubPathHelper(head.next, root.right);
     }
 
     /**
@@ -414,15 +590,24 @@ public class MediumLinkedList {
 
 
     public static void main(String[] args) {
-        ListNode head = new ListNode(10);
-        head.next = new ListNode(8);
-        head.next.next = new ListNode(11);
-        head.next.next.next = new ListNode(3);
-        head.next.next.next.next = new ListNode(6);
-        head.next.next.next.next.next = new ListNode(1);
-        head.next.next.next.next.next.next = new ListNode(5);
-        ListNode newNode = removeNthFromEnd(head, 2);
-        Print.printListNode(newNode);
+//        ListNode head = new ListNode(10);
+//        head.next = new ListNode(8);
+//        head.next.next = new ListNode(11);
+//        head.next.next.next = new ListNode(3);
+//        head.next.next.next.next = new ListNode(6);
+//        head.next.next.next.next.next = new ListNode(1);
+//        head.next.next.next.next.next.next = new ListNode(5);
+//        ListNode newNode = insertionSortList(head);
+//        Print.printListNode(newNode);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(10);
+        list.add(11);
+        list.add(100);
+        list.add(120);
+        list.add(140);
+        list.add(130);
+        System.out.println(Collections.max(list));
     }
 
 }

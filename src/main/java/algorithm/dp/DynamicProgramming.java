@@ -1,5 +1,6 @@
 package algorithm.dp;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -82,14 +83,56 @@ public class DynamicProgramming {
     }
 
     /**
+     * 152. 乘积最大子数组
+     * https://leetcode.cn/problems/maximum-product-subarray/
+     * @param nums
+     * @return
+     */
+    public int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE, imax = 1, imin = 1;
+        for (int i = 0; i < nums.length; i ++){
+            if (nums[i] < 0){
+                int temp = imax;
+                imax = imin;
+                imin = temp;
+            }
+            imax = Math.max(nums[i] * imax, nums[i]);
+            imin = Math.min(nums[i] * imin, nums[i]);
+            max = Math.max(imax, max);
+        }
+        return max;
+    }
+
+    /**
      * 300. 最长递增子序列
      * https://leetcode.cn/problems/longest-increasing-subsequence/
      * @param nums
      * @return
      */
     public int lengthOfLIS(int[] nums) {
+        if (nums.length == 0){
+            return 0;
+        }
+        // 1.定义状态 dp[i] 从0 -> i元素（选中）的最长子序列的长度
+        int[] dp = new int[nums.length];
+        // 返回结果 - 数组长度
+        int res = 0;
+        // 2.转移方程
+        // dp[i] = max(dp[j] + 1, dp[i]),注：j -> [0,i) 且 nums[j] < nums[i]
 
-        return 0;
+        // 3.初始化状态  初始时，每个元素都至少可以单独成为子序列 因此长度为1
+        Arrays.fill(dp, 1);
+
+        for (int i = 0; i < nums.length; i++){
+            for (int j = 0; j < i; j++){
+                if(nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            res = Math.max(res, dp[i]);
+        }
+
+        return res;
     }
 
     public static void main(String[] args) {
