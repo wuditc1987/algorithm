@@ -66,7 +66,7 @@ public class MediumLinkedList {
     }
 
     /**
-     * 19. 删除链表的倒数第 N 个结点  TODO
+     * 19. 删除链表的倒数第 N 个结点
      * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
      * @param head
      * @param n
@@ -514,11 +514,18 @@ public class MediumLinkedList {
         return isSubPathHelper(head, root)
                 || isSubPath(head, root.left) || isSubPath(head, root.right);
     }
-
-    public boolean isSubPathHelper(ListNode head, TreeNode root){
+    /**
+     * 判断当前root节点与当前head节点的内容是否相同。
+     * @param head
+     * @param root
+     * @return
+     */
+    private boolean isSubPathHelper(ListNode head, TreeNode root){
+        //则说明head已经遍历完毕，已经在root中寻找到了与head相同连续向下的路径
         if(head == null){
             return true;
         }
+        //head不为空但root以为空，在此路径上不可能寻找到相同路径了，返回false
         if (root == null){
             return false;
         }
@@ -566,6 +573,36 @@ public class MediumLinkedList {
     }
 
     /**
+     * 1721. 交换链表中的节点
+     * https://leetcode.cn/problems/swapping-nodes-in-a-linked-list/
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode swapNodes(ListNode head, int k) {
+        ListNode dummy = new ListNode(-1, head);
+        ListNode curr = dummy.next, last = dummy.next;
+
+        for (int i = 0; i < k - 1; i++){
+            curr = curr.next;
+        }
+        int len = 0;
+        ListNode temp = dummy.next;
+        while (temp != null){
+            temp = temp.next;
+            len ++;
+        }
+        for (int i = 0; i < len - k; i++){
+            last = last.next;
+        }
+        // 值交换
+        int currVal = curr.val;
+        curr.val = last.val;
+        last.val = currVal;
+        return dummy.next;
+    }
+
+    /**
      * 2095. 删除链表的中间节点
      * https://leetcode.cn/problems/delete-the-middle-node-of-a-linked-list/
      * @param head
@@ -587,27 +624,82 @@ public class MediumLinkedList {
         return dummy.next;
     }
 
+    /**
+     * 2181. 合并零之间的节点
+     * https://leetcode.cn/problems/merge-nodes-in-between-zeros/
+     * @param head
+     * @return
+     */
+    public static ListNode mergeNodes(ListNode head) {
+        if (head == null){
+            return null;
+        }
+        // 跳过头结点从第二个节点开始遍历
+        ListNode dummy = head.next;
+        ListNode newHead = new ListNode(0);
+        ListNode ans = newHead;
+        int sum = 0;
+        while (dummy != null){
+            if (dummy.val == 0){
+                newHead.next = new ListNode(sum);
+                // 重新设置新链表头
+                newHead = newHead.next;
+                sum = 0;
+            }else {
+                sum += dummy.val;
+            }
+            dummy = dummy.next;
+        }
+        return ans;
+    }
+
+    /**
+     * 面试题 04.03. 特定深度节点链表
+     * https://leetcode.cn/problems/list-of-depth-lcci/
+     * @param tree
+     * @return
+     */
+    public ListNode[] listOfDepth(TreeNode tree) {
+        if (tree == null){
+            return null;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(tree);
+        List<ListNode> list = new ArrayList<>();
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            ListNode listNode = new ListNode(0);
+            ListNode ans = listNode;
+            for (int i = 0; i < size; i++){
+                TreeNode treeNode = queue.poll();
+                listNode.next = new ListNode(treeNode.val);
+                listNode = listNode.next;
+                if (treeNode.left != null){
+                    queue.offer(treeNode.left);
+                }
+                if (treeNode.right != null){
+                    queue.offer(treeNode.right);
+                }
+            }
+            list.add(ans.next);
+        }
+        return list.toArray(new ListNode[0]);
+    }
 
 
     public static void main(String[] args) {
-//        ListNode head = new ListNode(10);
-//        head.next = new ListNode(8);
-//        head.next.next = new ListNode(11);
-//        head.next.next.next = new ListNode(3);
-//        head.next.next.next.next = new ListNode(6);
+        ListNode head = new ListNode(0);
+        head.next = new ListNode(3);
+        head.next.next = new ListNode(1);
+        head.next.next.next = new ListNode(0);
+        head.next.next.next.next = new ListNode(4);
+        head.next.next.next.next.next = new ListNode(5);
+        head.next.next.next.next.next.next = new ListNode(2);
+        head.next.next.next.next.next.next.next = new ListNode(0);
 //        head.next.next.next.next.next = new ListNode(1);
 //        head.next.next.next.next.next.next = new ListNode(5);
-//        ListNode newNode = insertionSortList(head);
-//        Print.printListNode(newNode);
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(10);
-        list.add(11);
-        list.add(100);
-        list.add(120);
-        list.add(140);
-        list.add(130);
-        System.out.println(Collections.max(list));
+        ListNode newNode = mergeNodes(head);
+        Print.printListNode(newNode);
     }
 
 }

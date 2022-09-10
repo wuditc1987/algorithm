@@ -1,7 +1,7 @@
 package algorithm.arrays;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * @author wudi
@@ -72,5 +72,204 @@ public class SlidingWindow {
             }
         }
         return min == Integer.MAX_VALUE ? 0 : min;
+    }
+
+
+    /**
+     * 219. 存在重复元素 II
+     * https://leetcode.cn/problems/contains-duplicate-ii/
+     * @param nums
+     * @param k
+     * @return
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>();
+        for(int i = 0; i < nums.length; i++){
+            if (i > k) {
+                set.remove(nums[i - k - 1]);
+            }
+            if (!set.add(nums[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 220. 存在重复元素 III
+     * 桶排序
+     * @param nums
+     * @param k
+     * @param t
+     * @return
+     */
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (nums.length == 0 || t < 0){
+            return false;
+        }
+        Map<Long, Long> map = new HashMap<>();
+        long w = (long) t + 1;
+
+        for (int i = 0; i < nums.length; i++){
+            long val = getBucketValue(nums[i], w);
+            // 同一个桶中如果有值，则直接返回
+            if (map.containsKey(val)){
+                return true;
+            }
+            //相邻的桶中如有值，则判断距离是否符合条件
+            if(map.containsKey(val - 1)
+                    && Math.abs((long) nums[i] - map.get(val - 1)) < w){
+                return true;
+            }
+
+            if(map.containsKey(val + 1)
+                    && Math.abs((long) nums[i] - map.get(val + 1)) < w){
+                return true;
+            }
+            map.put(val, (long) nums[i]);
+
+            // 如果后边有相同的桶，则直接删除
+            if (i >= k){
+                map.remove(getBucketValue(nums[i - k], w));
+            }
+        }
+        return false;
+    }
+    private long getBucketValue(long num, long w){
+        if (num >= 0){
+            return num / w;
+        }
+        return (num + 1) / w - 1;
+    }
+
+
+
+    /**
+     * 643. 子数组最大平均数 I
+     * https://leetcode.cn/problems/maximum-average-subarray-i/
+     * @param nums
+     * @param k
+     * @return
+     */
+    public double findMaxAverage(int[] nums, int k) {
+        int sum = 0;
+        // 先取前k个数相加
+        for (int i = 0; i < k; i++){
+            sum += nums[i];
+        }
+        int maxSum = sum;
+        for (int i = k; i < nums.length; i ++){
+            // 从下标为0开始减，加入尾部数字
+            sum = sum - nums[i - k] + nums[i];
+            // 比较原数和修改后的数的大小
+            maxSum = Math.max(sum, maxSum);
+        }
+
+        return 1.0 * maxSum / k;
+    }
+
+    /**
+     * 1004. 最大连续1的个数 III
+     * https://leetcode.cn/problems/max-consecutive-ones-iii/
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int longestOnes(int[] nums, int k) {
+        int len = nums.length;
+        int res = 0;
+        int l = 0, r = 0, zeros = 0;
+        while(r < len){
+            if(nums[r] == 0){
+                zeros ++;
+            }
+            while(zeros > k){
+                if (nums[l++] == 0) {
+                    zeros --;
+                }
+            }
+            res = Math.max(res, r - l + 1);
+            r ++;
+        }
+        return res;
+    }
+
+    /**
+     * 1343. 大小为 K 且平均值大于等于阈值的子数组数目
+     * https://leetcode.cn/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/
+     * @param arr
+     * @param k
+     * @param threshold
+     * @return
+     */
+    public int numOfSubarrays(int[] arr, int k, int threshold) {
+        int sum = 0;
+        for (int i = 0 ; i < k; i ++){
+            sum += arr[i];
+        }
+        int res = sum >= k * threshold ? 1 : 0;
+        for (int i = k; i < arr.length; i++){
+            sum -= arr[i - k];
+            sum += arr[i];
+            if (sum >= k * threshold){
+                res ++;
+            }
+        }
+        return res;
+    }
+
+    private boolean numOfSubarraysHelper(int[] nums, int val){
+        int sum = 0;
+
+        return sum >= val;
+    }
+
+
+
+    /**
+     * 1876. 长度为三且各字符不同的子字符串
+     * https://leetcode.cn/problems/substrings-of-size-three-with-distinct-characters/
+     * @param s
+     * @return
+     */
+    public static int countGoodSubstrings(String s) {
+        int res = 0;
+        for (int i = 0; i < s.length() - 2; i++){
+            String str = s.substring(i, i + 3);
+            if (countGoodSubstringsUnique(str)){
+                res ++;
+            }
+        }
+        return res;
+    }
+    private static boolean countGoodSubstringsUnique(String str){
+        char a = str.charAt(0);
+        char b = str.charAt(1);
+        char c = str.charAt(2);
+        int res = a ^ b ^ c;
+        return res != a && res != b && res != c;
+    }
+
+    /**
+     * 1984. 学生分数的最小差值
+     * https://leetcode.cn/problems/minimum-difference-between-highest-and-lowest-of-k-scores/
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int minimumDifference(int[] nums, int k) {
+        int min = Integer.MAX_VALUE;
+        Arrays.sort(nums);
+        // 找到
+        for (int i = 0; i + k - 1 < nums.length; i ++){
+            min = Math.min(min, Math.abs(nums[i + k - 1] - nums[i]));
+        }
+
+        return min;
+    }
+
+    public static void main(String[] args) {
+        String s = "aababcabc";
+        System.out.println(countGoodSubstrings(s));
     }
 }

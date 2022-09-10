@@ -241,7 +241,7 @@ public class EasyTreeDemo {
         }
         return isSubtree(root.left, subRoot)
                 || isSubtree(root.right, subRoot)
-                || isSameTree(root.left, subRoot.left);
+                || isSameTree(root, subRoot);
     }
 
     /**

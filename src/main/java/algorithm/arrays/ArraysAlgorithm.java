@@ -12,6 +12,52 @@ import java.util.*;
  */
 public class ArraysAlgorithm {
 
+
+    /**
+     * 15. 三数之和
+     * https://leetcode.cn/problems/3sum/
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> lists = new ArrayList<>();
+        if (nums == null || nums.length < 3){
+            return lists;
+        }
+
+        // 对数组排序
+        Arrays.sort(nums);
+        int len = nums.length;
+        for (int i = 0; i < len; i++){
+            // 相邻的两个数如果相同，则直接跳过，因为已经计算过了，不需要重复计算
+            if (i > 0 && nums[i] == nums[i - 1]){
+                continue;
+            }
+
+            int low = i + 1, high = nums.length - 1;
+            while (low < high){
+                int sum = nums[i] + nums[low] + nums[high];
+                if (sum == 0){
+                    lists.add(Arrays.asList(nums[i], nums[low], nums[high]));
+                    while (low < high && nums[low] == nums[low + 1]){
+                        low ++;
+                    }
+                    while(low < high && nums[high] == nums[high - 1]){
+                        high --;
+                    }
+                    low ++;
+                    high --;
+                } else if (sum > 0){
+                    high --;
+                } else {
+                    low ++;
+                }
+            }
+        }
+
+        return lists;
+    }
+
     /**
      * 26. 删除有序数组中的重复项
      * https://leetcode.cn/problems/remove-duplicates-from-sorted-array/
@@ -116,6 +162,56 @@ public class ArraysAlgorithm {
             res[--k] = queue.remove();
         }
         return res;
+    }
+
+    /**
+     * 349. 两个数组的交集
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] intersection(int[] nums1, int[] nums2) {
+        List<Integer> list = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums1){
+            set.add(num);
+        }
+
+        for (int num : nums2){
+            if (set.contains(num)){
+                list.add(num);
+                set.remove(num);
+            }
+        }
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+
+    /**
+     * 1475. 商品折扣后的最终价格
+     * https://leetcode.cn/problems/final-prices-with-a-special-discount-in-a-shop/
+     * @param prices
+     * @return
+     */
+    public int[] finalPrices(int[] prices) {
+        int[] dis = new int[prices.length];
+        for (int i = 0; i < prices.length; i ++){
+            // 折扣
+            int discount = 0;
+            // 满足条件 j > i
+            for (int j = i + 1; j < prices.length; j ++){
+                if (prices[j] <= prices[i]){
+                    // 找到符合条件的j 则直接退出循环，此时的j一定是数组最小下标
+                    discount = prices[j];
+                    break;
+                }
+            }
+            dis[i] = prices[i] - discount;
+        }
+        return dis;
     }
 
     public static void main(String[] args) {
