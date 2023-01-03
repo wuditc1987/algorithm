@@ -214,6 +214,31 @@ public class ArraysAlgorithm {
         return dis;
     }
 
+    /**
+     * 1608. 特殊数组的特征值
+     * https://leetcode.cn/problems/special-array-with-x-elements-greater-than-or-equal-x/
+     * @param nums
+     * @return
+     */
+    public int specialArray(int[] nums) {
+        Arrays.sort(nums);
+        int len = nums.length;
+        // 当x == len 时，需要满足条件 nums[0] >= len,如果满足则直接返回len即可
+        if (nums[0] >= len) {
+            return len;
+        }
+
+        // 当 x在[1, len)区间内时, 需要满足条件 nums[i - 1] < x && nums[i] >= x
+        // x = len-i
+        for (int i = 1; i <= len; i++){
+            int x = len - i;
+            if (nums[i - 1] < x && nums[i] >= x){
+                return x;
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         ArraysAlgorithm test = new ArraysAlgorithm();
 //        int[] arr = {1,2,2,4,4,4,7,7,7,7,7,6,5,3,6};

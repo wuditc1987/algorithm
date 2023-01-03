@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2022/6/30
  * @description 动态规划
  */
-public class EasyDynamicProgramming {
+public class EasyDP {
 
     /**
      * 70. 爬楼梯
@@ -138,23 +138,20 @@ public class EasyDynamicProgramming {
         return row;
     }
 
-
     /**
-     * 120. 三角形最小路径和
-     * https://leetcode.cn/problems/triangle/
-     * @param triangle
+     * 121. 买卖股票的最佳时机
+     * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/
+     * @param prices
      * @return
      */
-    public static int minimumTotal(List<List<Integer>> triangle) {
-        int[] mini = new int[triangle.size() + 1];
-
-        for (int i = triangle.size() - 1; i >= 0; i--){
-            List<Integer> list = triangle.get(i);
-            for (int j = 0; j < list.size(); j++){
-                mini[j] = list.get(j) + Math.min(mini[j], mini[j+1]);
-            }
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int max = 0;
+        for (int i = 0; i < prices.length; i++){
+            minPrice = Math.min(minPrice, prices[i]);
+            max = Math.max(max, prices[i] - minPrice);
         }
-        return mini[0];
+        return max;
     }
 
     /**
@@ -189,6 +186,7 @@ public class EasyDynamicProgramming {
             return 0;
         }
         // 1.定义状态 dp[i] 从0 -> i元素（选中）的最长子序列的长度
+        // 下标：数组长度  值：长度为i的数组的最长子序列长度
         int[] dp = new int[nums.length];
         // 返回结果 - 数组长度
         int res = 0;
@@ -379,6 +377,53 @@ public class EasyDynamicProgramming {
         }
 
         return Arrays.stream(arr).max().getAsInt();
+    }
+
+    /**
+     * 面试题 05.03. 翻转数位
+     * https://leetcode.cn/problems/reverse-bits-lcci/
+     * @param num
+     * @return
+     */
+    public int reverseBits(int num) {
+        int curr = 0, plus = 0, ans = 1;
+        for (int i = 0; i < 32; i++){
+            // 第i位为1
+            if ((num & (1 << i)) != 0){
+                curr++;
+                plus++;
+            }else {
+                //第i位为0
+                plus = curr + 1;
+                curr = 0 ;
+            }
+            ans = Math.max(ans, plus);
+        }
+        return ans;
+    }
+
+    /**
+     * 面试题 08.01. 三步问题
+     * https://leetcode.cn/problems/three-steps-problem-lcci/
+     * @param n
+     * @return
+     */
+    public int waysToStep(int n) {
+        if(n <= 2){
+            return n;
+        }
+        if(n == 3){
+            return 4;
+        }
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 4;
+        for (int i = 4; i <= n; i++){
+            dp[i] = ((dp[i - 3]  + dp[i - 2]) % 1000000007  + dp[i - 1]) % 1000000007;
+        }
+        return dp[n];
     }
 
     public static void main(String[] args) {

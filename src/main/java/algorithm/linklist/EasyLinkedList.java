@@ -205,8 +205,7 @@ public class EasyLinkedList {
     public ListNode removeElements(ListNode head, int val) {
         if (head == null) return null;
 
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
+        ListNode dummy = new ListNode(-1, head);
         ListNode node = dummy;
         while (node.next != null) {
             if (node.next.val == val) {

@@ -4,7 +4,7 @@ package algorithm.utils;
  * @author wudi
  * @version 1.0.0
  * @date 2021/8/21
- * @description TODO
+ * @description 单链表
  */
 public class ListNode {
 

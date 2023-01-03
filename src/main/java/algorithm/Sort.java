@@ -308,8 +308,9 @@ public class Sort {
             temp[k++] = arr[j++];
         }
 
-        if (temp.length > 0)
+        if (temp.length > 0) {
             System.arraycopy(temp, 0, arr, left, temp.length);
+        }
     }
 
 
